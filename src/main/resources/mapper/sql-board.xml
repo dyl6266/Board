@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper 인터페이스와 XML의 쿼리를 매칭하기 위한 네임스페이스 지정 -->
+<mapper namespace="com.dy.project.board.mapper.BoardMapper">
+
+	<!-- TB_BOARD 테이블 컬럼 컬럼 리스트 -->
+	<sql id="boardColumns">
+		  idx
+		, title
+		, content
+		, writer
+		, use_yn
+		, notice_yn
+		, secret_yn
+		, view_cnt
+		, insert_time
+		, update_time
+	</sql>
+
+	<select id="selectBoardList" resultType="com.dy.project.board.dto.BoardDTO">
+		SELECT
+			<include refid="boardColumns" />
+	</select>
+
+</mapper>
