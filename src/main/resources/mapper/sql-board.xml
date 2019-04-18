@@ -20,9 +20,59 @@
 		, update_time
 	</sql>
 
+	<!-- 게시글을 등록한다. -->
+	<insert id="insertBoard" parameterType="com.dy.project.board.dto.BoardDTO">
+		INSERT INTO TB_BOARD (
+			<include refid="boardColumns" />
+		) VALUES (
+			  #{idx}
+			, #{title}
+			, #{content}
+			, #{writer}
+			, 'Y'
+			, #{notice_yn}
+			, #{secret_yn}
+			, 0
+			, NOW()
+			, NULL
+		)
+	</insert>
+
+	<!-- 게시글을 수정한다. -->
+	<update id="updateBoard" parameterType="com.dy.project.board.dto.BoardDTO">
+		UPDATE TB_BOARD
+		SET
+			  title = #{title}
+			, content = #{content}
+			, writer = #{writer}
+			, notice_yn = #{noticeYn}
+			, secret_yn = #{secretYn}
+			, update_time = NOW()
+		WHERE
+			idx = #{idx}
+	</update>
+
+	<!-- 게시글 전체 개수를 조회한다. -->
+	<select id="selectTotalCnt" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			TB_BOARD
+		WHERE
+			use_yn = 'Y'
+	</select>
+
+	<!-- 게시글 리스트를 조회한다. -->
 	<select id="selectBoardList" resultType="com.dy.project.board.dto.BoardDTO">
 		SELECT
 			<include refid="boardColumns" />
+		FROM
+			TB_BOARD
+		WHERE
+			use_yn = 'Y'
+		ORDER BY
+			idx DESC,
+			insert_time DESC
 	</select>
 
 </mapper>
