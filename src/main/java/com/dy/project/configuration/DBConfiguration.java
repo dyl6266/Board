@@ -25,7 +25,10 @@ public class DBConfiguration {
 	private ApplicationContext applicationContext;
 
 	@Bean
-	/* prefix에 명시되어 있는 값으로 시작하는 설정을 이용해서 설정 파일 생성 */
+	/*
+	 * application.properties에 설정했던 DB 관련 정보를 사용하도록 지정
+	 * prefix에 지정되어 있는 값으로 시작하는 설정을 이용해서 히카리CP의 설정 파일을 생성
+	 */
 	@ConfigurationProperties(prefix = "spring.datasource.hikari")
 	public HikariConfig hikariConfig() {
 		return new HikariConfig();

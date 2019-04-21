@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.mapper.BoardMapper;
-import com.dy.project.common.Constant;
 import com.dy.project.common.Constant.Result;
-import com.dy.project.common.Constant.TableName;
 
 /* 해당 클래스가 비즈니스 로직을 수행하는 서비스 클래스임을 명시 */
 @Service

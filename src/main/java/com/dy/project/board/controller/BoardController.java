@@ -22,12 +22,9 @@ public class BoardController {
 	private BoardService boardService;
 
 	@GetMapping(value = "/board/write.do")
-	public ModelAndView openBoardWrite() {
+	public String openBoardWrite() {
 
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("board/write");
-
-		return mav;
+		return "board/write";
 	}
 
 	@PostMapping(value = "/board/register.do")
