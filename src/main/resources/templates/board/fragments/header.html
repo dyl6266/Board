@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head th:fragment="mainHead">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- fragment 속성은 공통 레이아웃에서 선언하여, 실제 Content 페이지의 내용을 채우게 됨 -->
+		<th:block layout:fragment="title"></th:block>
+
+		<!-- Main Styles -->
+		<link rel="stylesheet" th:href="@{/css/style.css}" />
+		<!-- mCustomScrollbar -->
+		<link rel="stylesheet" th:href="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}" />
+
+		<th:block layout:fragment="addCss"></th:block>
+	</head>
+</html>

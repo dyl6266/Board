@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<body th:fragment="mainBody">
+		<div class="fixed-navbar">
+			<div class="pull-left">
+				<!-- 콘텐츠마다 다른거 가져와보기 -->
+				<h1 class="page-title">Basic Tables</h1>
+			</div>
+		</div>
+		<!-- /.fixed-navbar -->
+
+		<div id="wrapper">
+			<div class="main-content">
+				<div class="row row-inline-block small-spacing">
+					<div class="col-xs-12">
+						<div class="box-content">
+							<div class="clearfix">
+								<h4 class="box-title pull-left">Basic Tables</h4>
+								<!-- /.box-title -->
+	
+								<!-- 리스트에서만 가지고 와보기 -->
+								<form action="#" id="searchform-header" class="searchform js__toggle active pull-right">
+									<input type="search" placeholder="Search..." class="input-search">
+									<button class="mdi mdi-magnify button-search" type="submit">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</button>
+								</form>
+								<!-- /.searchform -->
+							</div>
+	
+							<th:block layout:fragment="content"></th:block>
+	
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.col-xs-12 -->
+				</div>
+				<!-- /.row row-inline-block small-spacing -->
+				<footer class="footer">
+					<ul class="list-inline">
+						<li>2016 © NinjaAdmin.</li>
+					</ul>
+				</footer>
+			</div>
+			<!-- /.main-content -->
+		</div>
+		<!-- /#wrapper -->
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+				<script th:src="@{/script/html5shiv.min.js}"></script>
+				<script th:src="@{/script/respond.min.js}"></script>
+			<![endif]-->
+		<!-- 
+			================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script th:src="@{/scripts/jquery.min.js}"></script>
+		<script th:src="@{/plugin/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+		<script th:src="@{/scripts/main.js}"></script>
+	</body>
+</html>
