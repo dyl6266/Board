@@ -30,8 +30,8 @@
 			, #{content}
 			, #{writer}
 			, 'Y'
-			, #{notice_yn}
-			, #{secret_yn}
+			, #{noticeYn}
+			, #{secretYn}
 			, 0
 			, NOW()
 			, NULL
@@ -71,6 +71,7 @@
 		WHERE
 			use_yn = 'Y'
 		ORDER BY
+			notice_yn ASC,
 			idx DESC,
 			insert_time DESC
 	</select>

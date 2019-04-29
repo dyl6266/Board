@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="board/layout/basic">
 	<th:block layout:fragment="title">
-		<title>this is write page</title>
+		<title>this is a write page</title>
 	</th:block>
 
 	<th:block layout:fragment="content">
 		<div class="card-content">
-			<form class="form-horizontal">
+			<form class="form-horizontal" th:action="@{/board/register.do}" method="post" onsubmit="validationOfForm(this)">
+				<!-- /* 등록 타입 (insert or update) */ -->
+				<input type="hidden" name="type" th:value="${type }" />
+
 				<div class="form-group">
-					<label for="inp-type-1" class="col-sm-2 control-label">Title</label>
+					<label for="title" class="col-sm-2 control-label">제목</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="inp-type-1" placeholder="Some text value ...">
+						<input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력해 주세요." />
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label for="inp-type-2" class="col-sm-2 control-label">Name</label>
+					<label for="writer" class="col-sm-2 control-label">이름</label>
 					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inp-type-2" placeholder="Some text value ...">
+						<input type="email" name="writer" id="writer" class="form-control" placeholder="이름을 입력해 주세요." />
 					</div>
 				</div>
 
-				<div class="form-group margin-bottom-20">
+				<!-- <div class="form-group margin-bottom-20">
 					<label for="inp-type-1" class="col-sm-2 control-label">Category</label>
 					<div class="col-sm-10">
 						<select class="form-control">
@@ -31,16 +34,16 @@
 							<option value="3">Category 3</option>
 						</select>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="form-group">
-					<label for="inp-type-5" class="col-sm-2 control-label">Contents</label>
+					<label for="content" class="col-sm-2 control-label">내용</label>
 					<div class="col-sm-10">
-						<textarea class="form-control" id="inp-type-5" placeholder="Write your meassage"></textarea>
+						<textarea name="content" id="content" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
 					</div>
 				</div>
 
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label for="inp-type-4" class="col-sm-2 control-label">File</label>
 					<div class="col-sm-10">
 						<input type="file" id="exampleInputFile" class="visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
@@ -51,20 +54,28 @@
 							<li>file3.jpg <button type="button" class="btn btn-xs btn-circle"><i class="fa fa-close" aria-hidden="true"></i></button></li>
 						</ul>
 					</div>
-				</div>
+				</div> -->
 
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label for="inp-type-3" class="col-sm-2 control-label">Password</label>
 					<div class="col-sm-10">
 						<input type="password" class="form-control" id="inp-type-3" placeholder="Password" value="Password">
 					</div>
+				</div> -->
+				<div class="btn_wrap text-center">
+					<button type="submit" class="btn btn-primary waves-effect waves-light">저장하기</button>
+					<button type="button" class="btn btn-default waves-effect waves-light">뒤로가기</button>
 				</div>
 			</form>
-
-			<div class="btn_wrap text-center">
-				<button type="button" class="btn btn-primary waves-effect waves-light">Save</button>
-			</div>
 		</div>
 		<!-- /.card-content -->
+	</th:block>
+
+	<th:block layout:fragment="script">
+		<script>
+			function validationOfForm(obj) {
+				obj.submit();
+			}
+		</script>
 	</th:block>
 </html>
