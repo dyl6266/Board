@@ -1,23 +1,33 @@
 package com.dy.project.common;
 
+import lombok.Getter;
+
 public class Constant {
 
 	public enum YesNo {
 		Y, N;
 	}
 
+	@Getter
 	public enum Result {
-		OK(1), FAIL(0);
+		OK(1, true), FAIL(0, false);
 
-		private int result;
+		private int firstValue;
+		private boolean secondValue;
 
-		private Result(int result) {
-			this.result = result;
+		private Result(int firstValue, boolean secondValue) {
+			this.firstValue = firstValue;
+			this.secondValue = secondValue;
 		}
+//
+//		public int getFirstValue() {
+//			return firstValue;
+//		}
+//
+//		public boolean getsecondValue() {
+//			return secondValue;
+//		}
 
-		public int getResult() {
-			return result;
-		}
 	}
 
 	public enum TableName {

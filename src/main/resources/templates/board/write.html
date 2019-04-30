@@ -6,7 +6,7 @@
 
 	<th:block layout:fragment="content">
 		<div class="card-content">
-			<form class="form-horizontal" th:action="@{/board/register.do}" method="post" onsubmit="validationOfForm(this)">
+			<form class="form-horizontal" th:action="@{/boards}" method="post" onsubmit="validationOfForm(this)">
 				<!-- /* 등록 타입 (insert or update) */ -->
 				<input type="hidden" name="type" th:value="${type }" />
 

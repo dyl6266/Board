@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.service.BoardService;
+import com.dy.project.common.Constant.Result;
+import com.google.gson.JsonObject;
 
 /* 해당 클래스가 디스패처(Dispatcher) 역할을 하는 컨트롤러 클래스임을 명시 */
 @Controller
@@ -29,7 +31,7 @@ public class BoardController {
 	private BoardService boardService;
 
 	@GetMapping(value = "/board/write.do")
-	public String openBoardWrite(@RequestParam(value = "type", defaultValue = "write") String type, Model model) {
+	public String openBoardWrite(@RequestParam(value = "type", defaultValue = "insert") String type, Model model) {
 
 		if (StringUtils.isEmpty(type) || ("insert".equals(type) == false && "update".equals(type) == false)) {
 			return "redirect:/board/list.do";
@@ -53,27 +55,34 @@ public class BoardController {
 
 	@PostMapping(value = "/boards")
 	@ResponseBody
-	public String registerBoard(@RequestParam(value = "type", required = false) String type,
-								@Valid BoardDTO params, BindingResult bindingResult) {
+	public JsonObject registerBoard(@RequestParam(value = "type", defaultValue = "insert") String type,
+									@Valid final BoardDTO params, BindingResult bindingResult) {
+
+		JsonObject result = new JsonObject();
+		result.addProperty("result", Result.FAIL.getResult());
 
 		if (StringUtils.isEmpty(type) || ("insert".equals(type) == false && "update".equals(type) == false)) {
-			// 리다이렉트 처리
+			result.addProperty("message", "올바르지 않은 접근입니다.");
 		} else if (bindingResult.hasErrors() == true) {
 			FieldError fieldError = bindingResult.getFieldError();
-			System.out.println(fieldError.getDefaultMessage());
-		}
-
-		try {
-			if (boardService.registerBoard(params) == false) {
-				// 리다이렉트 처리
+			result.addProperty("message", fieldError.getDefaultMessage());
+		} else {
+			try {
+				if (boardService.registerBoard(params) == false) {
+					result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+				}
+			} catch (DataAccessException e) {
+				result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+			} catch (Exception e) {
+				result.addProperty("message", "알 수 없는 오류가 발생하였습니다. 다시 시도해 주세요.");
 			}
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			result = new JsonObject();
+			result.addProperty("messege", "성공적으로 저장되었습니다.");
+			result.addProperty("result", Result.OK.getResult());
 		}
 
-		return "redirect:/board/list.do";
+		return result;
 	}
 
 }
