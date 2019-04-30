@@ -28,8 +28,8 @@ public class BoardDTO {
 	private String content;
 
 	/** 작성자 */
-	@NotBlank(message = "작성자를 입력해 주세요.")
-	@Size(max = 10, message = "작성자는 10자 미만으로 입력해 주세요.")
+	@NotBlank(message = "이름을 입력해 주세요.")
+	@Size(max = 10, message = "이름은 10자 미만으로 입력해 주세요.")
 	private String writer;
 
 	/** 사용 여부 */

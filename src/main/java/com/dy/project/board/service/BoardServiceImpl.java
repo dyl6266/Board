@@ -28,12 +28,12 @@ public class BoardServiceImpl implements BoardService {
 
 		if (params.getIdx() == null) {
 			int result = boardMapper.insertBoard(params);
-			if (result == Result.FAIL.getResult()) {
+			if (result == Result.FAIL.getFirstValue()) {
 				return false;
 			}
 		} else {
 			int result = boardMapper.updateBoard(params);
-			if (result == Result.FAIL.getResult()) {
+			if (result == Result.FAIL.getFirstValue()) {
 				return false;
 			}
 		}

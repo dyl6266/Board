@@ -56,10 +56,10 @@ public class BoardController {
 	@PostMapping(value = "/boards")
 	@ResponseBody
 	public JsonObject registerBoard(@RequestParam(value = "type", defaultValue = "insert") String type,
-									@Valid final BoardDTO params, BindingResult bindingResult) {
+			@Valid final BoardDTO params, BindingResult bindingResult) {
 
 		JsonObject result = new JsonObject();
-		result.addProperty("result", Result.FAIL.getResult());
+		result.addProperty("result", Result.FAIL.getsecondValue());
 
 		if (StringUtils.isEmpty(type) || ("insert".equals(type) == false && "update".equals(type) == false)) {
 			result.addProperty("message", "올바르지 않은 접근입니다.");
@@ -79,7 +79,7 @@ public class BoardController {
 
 			result = new JsonObject();
 			result.addProperty("messege", "성공적으로 저장되었습니다.");
-			result.addProperty("result", Result.OK.getResult());
+			result.addProperty("result", Result.OK.getsecondValue());
 		}
 
 		return result;
