@@ -15,6 +15,14 @@ public interface BoardService {
 	public boolean registerBoard(BoardDTO params);
 
 	/**
+	 * 게시글을 조회한다.
+	 * 
+	 * @param idx
+	 * @return 게시글 상세 정보
+	 */
+	public BoardDTO getBoardDetail(Integer idx);
+
+	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
 	 * @return 게시글 리스트

@@ -22,7 +22,7 @@
 
 	<!-- 게시글을 등록한다. -->
 	<insert id="insertBoard" parameterType="com.dy.project.board.dto.BoardDTO">
-		INSERT INTO TB_BOARD (
+		INSERT INTO tb_board (
 			<include refid="boardColumns" />
 		) VALUES (
 			  #{idx}
@@ -38,9 +38,21 @@
 		)
 	</insert>
 
+	<!-- 게시글을 조회한다. -->
+	<select id="selectBoardDetail" resultType="com.dy.project.board.dto.BoardDTO">
+		SELECT
+			<include refid="boardColumns" />
+		FROM
+			tb_board
+		WHERE
+			use_yn = 'Y'
+		AND
+			idx = #{idx}
+	</select>
+
 	<!-- 게시글을 수정한다. -->
 	<update id="updateBoard" parameterType="com.dy.project.board.dto.BoardDTO">
-		UPDATE TB_BOARD
+		UPDATE tb_board
 		SET
 			  title = #{title}
 			, content = #{content}
@@ -57,7 +69,7 @@
 		SELECT
 			COUNT(*)
 		FROM
-			TB_BOARD
+			tb_board
 		WHERE
 			use_yn = 'Y'
 	</select>
@@ -67,7 +79,7 @@
 		SELECT
 			<include refid="boardColumns" />
 		FROM
-			TB_BOARD
+			tb_board
 		WHERE
 			use_yn = 'Y'
 		ORDER BY
@@ -75,5 +87,14 @@
 			idx DESC,
 			insert_time DESC
 	</select>
+
+	<!-- 게시글 조회 수를 증가시킨다. -->
+	<update id="updateViewCnt" parameterType="integer">
+		UPDATE tb_board
+		SET
+			view_cnt = view_cnt + 1
+		WHERE
+			idx = #{idx}
+	</update>
 
 </mapper>

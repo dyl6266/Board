@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.service.BoardService;
@@ -42,21 +41,31 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/board/list.do")
-	public ModelAndView openBoardList() {
-
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("board/list");
+	public String openBoardList(Model model) {
 
 		List<BoardDTO> boardList = boardService.getBoardList();
-		mav.addObject("boardList", boardList);
+		model.addAttribute("boardList", boardList);
 
-		return mav;
+		return "board/list";
+	}
+
+	@GetMapping(value = "/board/view.do")
+	public String openBoardView(@RequestParam(value = "idx", required = false) Integer idx, Model model) {
+
+		if (idx == null || idx < 1) {
+			return "redirect:/board/list.do";
+		}
+
+		BoardDTO board = boardService.getBoardDetail(idx);
+		model.addAttribute("board", board);
+
+		return "board/view";
 	}
 
 	@PostMapping(value = "/boards")
 	@ResponseBody
 	public JsonObject registerBoard(@RequestParam(value = "type", defaultValue = "insert") String type,
-			@Valid final BoardDTO params, BindingResult bindingResult) {
+									@Valid final BoardDTO params, BindingResult bindingResult) {
 
 		JsonObject result = new JsonObject();
 		result.addProperty("result", Result.FAIL.getsecondValue());

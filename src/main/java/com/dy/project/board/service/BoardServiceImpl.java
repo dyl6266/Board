@@ -27,11 +27,13 @@ public class BoardServiceImpl implements BoardService {
 	public boolean registerBoard(BoardDTO params) {
 
 		if (params.getIdx() == null) {
+			/* insert 쿼리 실행 결과 */
 			int result = boardMapper.insertBoard(params);
 			if (result == Result.FAIL.getFirstValue()) {
 				return false;
 			}
 		} else {
+			/* update 쿼리 실행 결과 */
 			int result = boardMapper.updateBoard(params);
 			if (result == Result.FAIL.getFirstValue()) {
 				return false;
@@ -39,6 +41,27 @@ public class BoardServiceImpl implements BoardService {
 		}
 
 		return true;
+	}
+
+	/**
+	 * 게시글을 조회한다.
+	 * 
+	 * @param idx - 게시글 번호 (PK)
+	 * @return 게시글 상세 정보
+	 */
+	@Override
+	public BoardDTO getBoardDetail(Integer idx) {
+
+		BoardDTO board = boardMapper.selectBoardDetail(idx);
+		if (board != null) {
+			/* 조회 수 증가 쿼리 실행 결과 */
+			int result = boardMapper.updateViewCnt(idx);
+			if (result == Result.FAIL.getFirstValue()) {
+				return null;
+			}
+		}
+
+		return board;
 	}
 
 	/**

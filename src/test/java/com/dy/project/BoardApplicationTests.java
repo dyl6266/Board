@@ -36,7 +36,7 @@ public class BoardApplicationTests {
 			BoardDTO dto = new BoardDTO();
 			dto.setTitle(i + "번 제목입니다.");
 			dto.setContent(i + "번 내용입니다.");
-			dto.setWriter(i + "번 작성자입니다.");
+			dto.setWriter(i + "번 작성자");
 			dto.setUseYn(YesNo.Y);
 			dto.setNoticeYn(YesNo.N);
 			dto.setSecretYn(YesNo.N);

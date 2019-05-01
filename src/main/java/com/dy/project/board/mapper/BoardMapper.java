@@ -17,22 +17,30 @@ public interface BoardMapper {
 	 * 게시글을 등록한다.
 	 * 
 	 * @param params - 게시글 등록에 사용할 파라미터들이 담긴 클래스
-	 * @return
+	 * @return 쿼리 실행 수
 	 */
 	public int insertBoard(BoardDTO params);
+
+	/**
+	 * 게시글을 조회한다.
+	 * 
+	 * @param idx - 게시글 번호 (PK)
+	 * @return 게시글 상세 정보
+	 */
+	public BoardDTO selectBoardDetail(Integer idx);
 
 	/**
 	 * 게시글을 수정한다.
 	 * 
 	 * @param params - 게시글 수정에 사용할 파라미터들이 담긴 클래스
-	 * @return
+	 * @return 쿼리 실행 수
 	 */
 	public int updateBoard(BoardDTO params);
 
 	/**
-	 * 게시글 전체 개수를 조회한다.
+	 * 게시글 전체 개수를 카운팅한다.
 	 * 
-	 * @return
+	 * @return 전체 데이터 수
 	 */
 	public int selectTotalCnt();
 
@@ -42,5 +50,13 @@ public interface BoardMapper {
 	 * @return 게시글 리스트
 	 */
 	public List<BoardDTO> selectBoardList();
+
+	/**
+	 * 게시글 조회 수를 증가시킨다.
+	 * 
+	 * @param idx
+	 * @return 쿼리 실행 수
+	 */
+	public int updateViewCnt(Integer idx);
 
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="board/layout/basic">
+	<th:block layout:fragment="title">
+		<title>this is a view page</title>
+	</th:block>
+
+	<th:block layout:fragment="content">
+		<div class="card-content">
+			<form class="form-horizontal form-view">
+				<div class="form-group">
+					<label for="inp-type-1" class="col-sm-2 control-label">제목</label>
+					<div class="col-sm-10">
+						<p class="form-control" th:text="${board.title}"></p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inp-type-2" class="col-sm-2 control-label">이름</label>
+					<div class="col-sm-10">
+						<p class="form-control" th:text="${board.writer}"></p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inp-type-5" class="col-sm-2 control-label">내용</label>
+					<div class="col-sm-10">
+						<p class="form-control" th:text="${board.content}"></p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inp-type-5" class="col-sm-2 control-label">등록일</label>
+					<div class="col-sm-10">
+						<p class="form-control" th:text="${#calendars.format(board.insertTime, 'yyyy-MM-dd HH:mm:ss')}"></p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inp-type-5" class="col-sm-2 control-label">조회 수</label>
+					<div class="col-sm-10">
+						<p class="form-control" th:text="${board.viewCnt}"></p>
+					</div>
+				</div>
+
+				<!-- <div class="form-group">
+					<label for="inp-type-4" class="col-sm-2 control-label">File</label>
+					<div class="col-sm-10">
+						<div class="form-control file_list">
+							<a href="#"><i class="fa fa-file-o" aria-hidden="true"></i> file1.jpg</a>
+							<a href="#"><i class="fa fa-file-o" aria-hidden="true"></i> file2.jpg</a>
+							<a href="#"><i class="fa fa-file-o" aria-hidden="true"></i> file3.jpg</a>
+						</div>
+					</div>
+				</div> -->
+			</form>
+
+			<div class="btn_wrap text-center">
+				<a th:href="@{/board/list.do}" class="btn btn-default waves-effect waves-light">뒤로가기</a>
+			</div>
+		</div>
+		<!-- /.card-content -->
+	</th:block>
+
+	<th:block layout:fragment="script">
+		<script>
+			function validationOfForm(obj) {
+				obj.submit();
+			}
+		</script>
+	</th:block>
+</html>
