@@ -30,8 +30,8 @@
 			, #{content}
 			, #{writer}
 			, 'Y'
-			, #{noticeYn}
-			, #{secretYn}
+			, IFNULL(#{noticeYn}, 'N')
+			, IFNULL(#{secretYn}, 'N')
 			, 0
 			, NOW()
 			, NULL
