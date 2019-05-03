@@ -23,6 +23,14 @@ public interface BoardService {
 	public BoardDTO getBoardDetail(Integer idx);
 
 	/**
+	 * 게시글을 삭제한다.
+	 * 
+	 * @param idx - 게시글 번호 (PK)
+	 * @return 삭제 성공 여부
+	 */
+	public boolean deleteBoard(Integer idx);
+
+	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
 	 * @return 게시글 리스트

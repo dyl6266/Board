@@ -1,20 +1,19 @@
 package com.dy.project.board.dto;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.dy.project.common.Constant.YesNo;
+import com.dy.project.common.dto.CommonDTO;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BoardDTO {
+public class BoardDTO extends CommonDTO {
 
-	/** PK */
+	/** 게시글 번호 (PK) */
 	private Integer idx;
 
 	/** 제목 */
@@ -32,22 +31,13 @@ public class BoardDTO {
 	@Size(max = 10, message = "이름은 10자 미만으로 입력해 주세요.")
 	private String writer;
 
-	/** 사용 여부 */
-	private YesNo useYn;
+	/** 조회 수 */
+	private int viewCnt;
 
 	/** 공지글 여부 */
 	private YesNo noticeYn;
 
 	/** 비밀글 여부 */
 	private YesNo secretYn;
-
-	/** 조회 수 */
-	private int viewCnt;
-
-	/** 등록일 */
-	private Date insertTime;
-
-	/** 수정일 */
-	private Date updateTime;
 
 }

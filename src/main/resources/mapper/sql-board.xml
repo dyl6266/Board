@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Mapper 인터페이스와 XML의 쿼리를 매칭하기 위한 네임스페이스 지정 -->
 <mapper namespace="com.dy.project.board.mapper.BoardMapper">
 
-	<!-- TB_BOARD 테이블 컬럼 컬럼 리스트 -->
+	<!-- TB_BOARD 테이블 컬럼 리스트 -->
 	<sql id="boardColumns">
 		  idx
 		, title
@@ -57,9 +55,18 @@
 			  title = #{title}
 			, content = #{content}
 			, writer = #{writer}
-			, notice_yn = #{noticeYn}
-			, secret_yn = #{secretYn}
+			<if test="@com.dy.project.common.util.MyBatisUtils@isEmpty( noticeYn ) == false">, notice_yn = #{noticeYn}</if>
+			<if test="@com.dy.project.common.util.MyBatisUtils@isEmpty( noticeYn ) == false">, secret_yn = #{secretYn}</if>
 			, update_time = NOW()
+		WHERE
+			idx = #{idx}
+	</update>
+
+	<!-- 게시글을 삭제한다. -->
+	<update id="deleteBoard" parameterType="integer">
+		UPDATE tb_board
+		SET
+			use_yn = 'N'
 		WHERE
 			idx = #{idx}
 	</update>

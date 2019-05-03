@@ -38,6 +38,14 @@ public interface BoardMapper {
 	public int updateBoard(BoardDTO params);
 
 	/**
+	 * 게시글을 삭제한다.
+	 * 
+	 * @param idx - 게시글 번호 (PK)
+	 * @return 쿼리 실행 수
+	 */
+	public int deleteBoard(Integer idx);
+
+	/**
 	 * 게시글 전체 개수를 카운팅한다.
 	 * 
 	 * @return 전체 데이터 수

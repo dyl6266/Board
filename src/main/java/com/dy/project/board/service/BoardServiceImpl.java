@@ -65,6 +65,29 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	/**
+	 * 게시글을 삭제한다.
+	 * 
+	 * @param idx - 게시글 번호 (PK)
+	 * @return 삭제 성공 여부
+	 */
+	@Override
+	public boolean deleteBoard(Integer idx) {
+
+		BoardDTO board = boardMapper.selectBoardDetail(idx);
+		if ( board == null || "N".equals(String.valueOf(board.getUseYn())) ) {
+			return false;
+		}
+
+		/* delete 쿼리 실행 결과 */
+		int result = boardMapper.deleteBoard(idx);
+		if (result == Result.FAIL.getFirstValue()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
 	 * @return 게시글 리스트

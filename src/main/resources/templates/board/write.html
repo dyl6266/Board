@@ -6,21 +6,21 @@
 
 	<th:block layout:fragment="content">
 		<div class="card-content">
-			<form class="form-horizontal" th:action="@{/boards}" method="post" onsubmit="return validationOfForm(this)">
-				<!--/* 등록 타입 (insert or update) */-->
-				<input type="hidden" name="type" th:value="${type }" />
+			<form class="form-horizontal" th:action="@{/boards}" th:object="${board}" method="post" onsubmit="return validationOfForm(this)">
+				<!--/* update의 경우 서버로 전달할 게시글 번호 (PK) */-->
+				<input type="hidden" th:if="*{idx != null and idx > 0}" th:field="*{idx}" />
 
 				<div class="form-group">
 					<label for="title" class="col-sm-2 control-label">제목</label>
 					<div class="col-sm-10">
-						<input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력해 주세요." />
+						<input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력해 주세요." />
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="writer" class="col-sm-2 control-label">이름</label>
 					<div class="col-sm-10">
-						<input type="text" name="writer" id="writer" class="form-control" placeholder="이름을 입력해 주세요." />
+						<input type="text" th:field="*{writer}" class="form-control" placeholder="이름을 입력해 주세요." />
 					</div>
 				</div>
 
@@ -39,7 +39,7 @@
 				<div class="form-group">
 					<label for="content" class="col-sm-2 control-label">내용</label>
 					<div class="col-sm-10">
-						<textarea name="content" id="content" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
+						<textarea th:field="*{content}" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
 					</div>
 				</div>
 
@@ -114,17 +114,21 @@
 					data : JSON.stringify(params),
 					async : false,
 					success : function(response) {
-						console.log(response);
+						if ( response.result === true ) {
+							location.href = /*[[ @{/board/list.do} ]]*/;
+						}
 					},
 					error : function(request, status, error) {
-						console.log(request);
+						alert("오류가 발생했습니다. 새로고침 후에 다시 시도해 주세요.");
 					}
-				}); // end of ajax
+				});
+				// end of ajax
 
 				return false;
-			} // end of function
+			}
+			// end of function
 
 			/*]]>*/
 		</script>
-</th:block>
+	</th:block>
 </html>

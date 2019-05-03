@@ -2,16 +2,18 @@ package com.dy.project.board.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,18 +28,33 @@ import com.google.gson.JsonObject;
 @Controller
 public class BoardController {
 
+	/* request 오브젝트 선언 */
+	@Autowired
+	private HttpServletRequest request;
+
 	/* 서비스 빈(Bean) 선언(연결) */
 	@Autowired
 	private BoardService boardService;
 
 	@GetMapping(value = "/board/write.do")
-	public String openBoardWrite(@RequestParam(value = "type", defaultValue = "insert") String type, Model model) {
+	public String openBoardWrite(@RequestParam(value = "idx", required = false) Integer idx, Model model) {
 
-		if (StringUtils.isEmpty(type) || ("insert".equals(type) == false && "update".equals(type) == false)) {
-			return "redirect:/board/list.do";
+		/* insert의 경우 */
+		if (idx == null) {
+			model.addAttribute("board", new BoardDTO());
+		/* update의 경우 */
+		} else {
+			if (idx < 1) {
+				return "redirect:" + request.getContextPath() + "/board/list.do";
+			}
+
+			BoardDTO board = boardService.getBoardDetail(idx);
+			if (board == null) {
+				return "redirect:" + request.getContextPath() + "/board/list.do";
+			}
+			model.addAttribute("board", board);
 		}
 
-		model.addAttribute("type", type);
 		return "board/write";
 	}
 
@@ -63,18 +80,14 @@ public class BoardController {
 		return "board/view";
 	}
 
-	@PostMapping(value = "/boards", produces = "application/json")
+	@PostMapping(value = "/boards")
 	@ResponseBody
-	public JsonObject registerBoard(@RequestParam(value = "type", defaultValue = "insert") String type,
-									@RequestBody @Valid final BoardDTO params, BindingResult bindingResult) {
+	public JsonObject registerBoard(@RequestBody @Valid final BoardDTO params, BindingResult bindingResult) {
 
 		JsonObject result = new JsonObject();
 		result.addProperty("result", Result.FAIL.getsecondValue());
 
-		if (StringUtils.isEmpty(type) || ("insert".equals(type) == false && "update".equals(type) == false)) {
-			result.addProperty("message", "올바르지 않은 접근입니다.");
-			return result;
-		} else if (bindingResult.hasErrors() == true) {
+		if (bindingResult.hasErrors() == true) {
 			FieldError fieldError = bindingResult.getFieldError();
 			result.addProperty("message", fieldError.getDefaultMessage());
 			return result;
@@ -94,10 +107,39 @@ public class BoardController {
 		}
 
 		result = new JsonObject();
-		result.addProperty("messege", "성공적으로 저장되었습니다.");
 		result.addProperty("result", Result.OK.getsecondValue());
 		return result;
+	}
+	// end of method
 
-	} // end of method
+	@PatchMapping(value = "/boards/{idx}")
+	@ResponseBody
+	public JsonObject deleteBoard(@Valid @PathVariable("idx") final Integer idx) {
+
+		JsonObject result = new JsonObject();
+		result.addProperty("result", Result.FAIL.getsecondValue());
+
+		if (idx == null || idx < 1) {
+			result.addProperty("message", "올바르지 않은 접근입니다.");
+			return result;
+		}
+
+		try {
+			if (boardService.deleteBoard(idx) == false) {
+				result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+				return result;
+			}
+		} catch (DataAccessException e) {
+			result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+			return result;
+		} catch (Exception e) {
+			result.addProperty("message", "알 수 없는 오류가 발생하였습니다. 다시 시도해 주세요.");
+			return result;
+		}
+
+		result = new JsonObject();
+		result.addProperty("result", Result.OK.getsecondValue());
+		return result;
+	}
 
 }
