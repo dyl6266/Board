@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.service.BoardService;
+import com.dy.project.comment.dto.CommentDTO;
+import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.Result;
 import com.google.gson.JsonObject;
 
@@ -36,13 +38,16 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private CommentService commentService;
+
 	@GetMapping(value = "/board/write.do")
 	public String openBoardWrite(@RequestParam(value = "idx", required = false) Integer idx, Model model) {
 
 		/* insert의 경우 */
 		if (idx == null) {
 			model.addAttribute("board", new BoardDTO());
-		/* update의 경우 */
+			/* update의 경우 */
 		} else {
 			if (idx < 1) {
 				return "redirect:" + request.getContextPath() + "/board/list.do";
@@ -74,8 +79,15 @@ public class BoardController {
 			return "redirect:/board/list.do";
 		}
 
+		/* 게시글 상세 정보 */
 		BoardDTO board = boardService.getBoardDetail(idx);
 		model.addAttribute("board", board);
+
+		/* 댓글 리스트 */
+		CommentDTO params = new CommentDTO();
+		params.setBoardIdx(idx);
+		List<CommentDTO> commentList = commentService.getCommentList(params);
+		model.addAttribute("commentList", commentList);
 
 		return "board/view";
 	}

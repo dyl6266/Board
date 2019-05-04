@@ -27,7 +27,7 @@
 			, #{title}
 			, #{content}
 			, #{writer}
-			, 'Y'
+			, IFNULL(#{useYn}, 'Y')
 			, IFNULL(#{noticeYn}, 'N')
 			, IFNULL(#{secretYn}, 'N')
 			, 0
@@ -52,12 +52,12 @@
 	<update id="updateBoard" parameterType="com.dy.project.board.dto.BoardDTO">
 		UPDATE tb_board
 		SET
-			  title = #{title}
+			  update_time = NOW()
+			, title = #{title}
 			, content = #{content}
 			, writer = #{writer}
 			<if test="@com.dy.project.common.util.MyBatisUtils@isEmpty( noticeYn ) == false">, notice_yn = #{noticeYn}</if>
-			<if test="@com.dy.project.common.util.MyBatisUtils@isEmpty( noticeYn ) == false">, secret_yn = #{secretYn}</if>
-			, update_time = NOW()
+			<if test="@com.dy.project.common.util.MyBatisUtils@isEmpty( secretYn ) == false">, secret_yn = #{secretYn}</if>
 		WHERE
 			idx = #{idx}
 	</update>

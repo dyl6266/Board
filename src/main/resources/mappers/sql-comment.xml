@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper 인터페이스와 XML의 쿼리를 매칭하기 위한 네임스페이스 지정 -->
+<mapper namespace="com.dy.project.comment.mapper.CommentMapper">
+
+	<!-- TB_COMMENT 테이블 컬럼 리스트 -->
+	<sql id="commentColumns">
+		idx
+		, board_idx
+		, content
+		, writer
+		, secret_yn
+		, use_yn
+		, insert_time
+		,
+		update_time
+	</sql>
+
+	<!-- 댓글을 등록한다. -->
+	<insert id="insertComment" parameterType="com.dy.project.comment.dto.CommentDTO">
+		INSERT INTO tb_comment (
+			<include refid="commentColumns" />
+		) VALUES (
+			  #{idx}
+			, #{boardIdx}
+			, #{content}
+			, #{writer}
+			, IFNULL(#{secretYn}, 'N')
+			, IFNULL(#{useYn}, 'Y')
+			, NOW()
+			, NULL
+		)
+	</insert>
+
+	<!-- 댓글을 조회한다. -->
+	<select id="selectCommentDetail" parameterType="hashmap" resultType="com.dy.project.comment.dto.CommentDTO">
+		SELECT
+			<include refid="commentColumns" />
+		FROM
+			tb_comment
+		WHERE
+			use_yn = 'Y'
+		AND
+			idx = #{idx}
+		AND
+			board_idx = #{boardIdx}
+	</select>
+
+	<!-- 댓글을 수정한다. -->
+	<update id="updateComment" parameterType="com.dy.project.comment.dto.CommentDTO">
+		UPDATE tb_comment
+		SET
+			  update_time = NOW()
+			, content = #{content}
+			, writer = #{writer}
+			<if test="@com.dy.project.common.util.MyBatisUtils@isEmpty( secretYn ) == false">, secret_yn = #{secretYn}</if>
+		WHERE
+			idx = #{idx}
+		AND
+			board_idx = #{boardIdx}
+	</update>
+
+	<!-- 댓글을 삭제한다. -->
+	<update id="deleteComment" parameterType="hashmap">
+		UPDATE tb_comment
+		SET
+			use_yn = 'N'
+		WHERE
+			idx = #{idx}
+		AND
+			board_idx = #{boardIdx}
+	</update>
+
+	<!-- 댓글 전체 개수를 카운팅한다. -->
+	<select id="selectTotalCnt" parameterType="com.dy.project.comment.dto.CommentDTO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			tb_comment
+		WHERE
+			use_yn = 'Y'
+		AND
+			board_idx = #{boardIdx}
+	</select>
+
+	<!-- 댓글 리스트를 조회한다. -->
+	<select id="selectCommentList" parameterType="com.dy.project.comment.dto.CommentDTO" resultType="com.dy.project.comment.dto.CommentDTO">
+		SELECT
+			<include refid="commentColumns" />
+		FROM
+			tb_comment
+		WHERE
+			use_yn = 'Y'
+		AND
+			board_idx = #{boardIdx}
+		ORDER BY
+			  idx DESC
+			, insert_time DESC
+	</select>
+
+</mapper>

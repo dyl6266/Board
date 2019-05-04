@@ -1,5 +1,6 @@
 package com.dy.project.comment.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,17 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public boolean deleteComment(Integer idx, Integer boardIdx) {
 
-		CommentDTO comment = commentMapper.selectCommentDetail(idx, boardIdx);
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("idx", idx);
+		params.put("boardIdx", boardIdx);
+
+		CommentDTO comment = commentMapper.selectCommentDetail(params);
 		if (comment == null || "N".equals(String.valueOf(comment.getUseYn()))) {
 			return false;
 		}
 
 		/* delete 쿼리 실행 결과 */
-		int result = commentMapper.deleteComment(idx, boardIdx);
+		int result = commentMapper.deleteComment(params);
 		if (result == Result.FAIL.getFirstValue()) {
 			return false;
 		}

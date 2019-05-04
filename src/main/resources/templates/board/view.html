@@ -70,25 +70,21 @@
 					<h4 class="box-title pull-left">Comment</h4>
 					<!-- /.box-title -->
 				</div>
-	
-				<form class="form-horizontal form-view">
+
+				<form class="form-horizontal form-view" th:action="@{/replies}" method="post" onsubmit="validationOfForm(this)">
 					<div class="input-group margin-bottom-20">
-						<input type="email" class="form-control" placeholder="">
-						<div class="input-group-btn"><button type="button" class="btn waves-effect waves-light"><i class="fa fa-commenting" aria-hidden="true"></i></button></div>
+						<input type="text" name="comment" class="form-control" placeholder="댓글을 입력해 주세요.">
+						<div class="input-group-btn">
+							<button type="submit" class="btn waves-effect waves-light"><i class="fa fa-commenting" aria-hidden="true"></i></button>
+						</div>
 						<!-- /.input-group-btn -->
 					</div>
-					<ul class="notice-list">
+					<ul class="notice-list" th:if="${not #lists.isEmpty( commentList )}" th:each="row, status : ${commentList}">
 						<li>
-							<span class="name">Betty Simmons</span>
-							<span class="desc">There are new settings available</span>
-							<span class="time">2019.03.26</span>
-							<button type="button" class="btn btn-xs btn-circle"><i class="fa fa-close" aria-hidden="true"></i></button>
-						</li>
-						<li>
-							<span class="name">Betty Kim</span>
-							<span class="desc">There are new settings available</span>
-							<span class="time">2019.03.15</span>
-							<button type="button" class="btn btn-xs btn-circle"><i class="fa fa-close" aria-hidden="true"></i></button>
+							<span class="name" th:text="${status.count + '.' + row.writer}"></span>
+							<span class="desc" th:text="${row.content}"></span>
+							<span class="time" th:text="${#calendars.format( row.insertTime, 'yyyy-MM-dd HH:mm:ss' )}"></span>
+							<button type="button" class="btn btn-xs btn-circle"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 						</li>
 					</ul>
 				</form>
@@ -133,6 +129,36 @@
 
 					return false;
 				}
+			}
+			// end of function
+
+			function printCommentList(boardIdx) {
+
+				if ( isEmpty(boardIdx) || boardIdx < 1 ) {
+					alert("올바르지 않은 접근입니다.");
+					return false;
+				}
+
+				var uri = /*[[ @{/replies/} ]]*/;
+				$.ajax({
+					url : uri + boardIdx,
+					type : "get",
+					headers: {
+						"Content-Type": "application/json",
+						"X-HTTP-Method-Override": "patch"
+					},
+					dataType : "json",
+					async : false,
+					success : function(response) {
+						console.log(response);
+					},
+					error : function(request, status, error) {
+						alert("오류가 발생했습니다. 새로고침 후에 다시 시도해 주세요.");
+					}
+				});
+				// end of ajax
+
+				return false;
 			}
 			// end of function
 

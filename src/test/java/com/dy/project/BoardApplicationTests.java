@@ -1,5 +1,7 @@
 package com.dy.project;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.mapper.BoardMapper;
+import com.dy.project.comment.dto.CommentDTO;
+import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.YesNo;
 
 @RunWith(SpringRunner.class)
@@ -20,6 +24,9 @@ public class BoardApplicationTests {
 
 	@Autowired
 	private BoardMapper boardMapper;
+
+	@Autowired
+	private CommentService commentService;
 
 	@Test
 	public void contextLoads() {
@@ -47,6 +54,30 @@ public class BoardApplicationTests {
 			dto.setViewCnt(0);
 			boardMapper.insertBoard(dto);
 		}
+	}
+
+	@Test
+	public void testCommentInsert() {
+		for (int i = 0; i < 50; i++) {
+			CommentDTO dto = new CommentDTO();
+			dto.setBoardIdx(62);
+			dto.setContent(i + "번 내용입니당당당");
+			dto.setWriter("도영 도영 0" + i);
+			commentService.registerComment(dto);
+		}
+	}
+	
+	@Test
+	public void testCommentDelete() {
+		boolean result = commentService.deleteComment(2, 62);
+		System.out.println(result);
+	}
+	
+	@Test
+	public void testCOmmenList() {
+		CommentDTO params = new CommentDTO();
+		params.setBoardIdx(61);
+		List<CommentDTO> list = commentService.getCommentList(params);
 	}
 
 }
