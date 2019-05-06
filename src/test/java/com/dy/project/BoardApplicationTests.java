@@ -8,12 +8,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.mapper.BoardMapper;
 import com.dy.project.comment.dto.CommentDTO;
 import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.YesNo;
+import com.google.gson.Gson;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -78,6 +80,14 @@ public class BoardApplicationTests {
 		CommentDTO params = new CommentDTO();
 		params.setBoardIdx(61);
 		List<CommentDTO> list = commentService.getCommentList(params);
+		Gson gson = null;
+		if ( CollectionUtils.isEmpty(list)) {
+			gson = new Gson();
+		} else {
+			String jsonStr = new Gson().toJson(list);
+			System.out.println(jsonStr);
+		}
+
 	}
 
 }

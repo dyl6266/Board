@@ -71,17 +71,21 @@
 					<!-- /.box-title -->
 				</div>
 
-				<form class="form-horizontal form-view" th:action="@{/replies}" method="post" onsubmit="validationOfForm(this)">
+				<form name="commentForm" class="form-horizontal form-view" th:action="@{/comments}" method="post" onsubmit="return validationOfForm(this)">
+					<input type="hidden" name="boardIdx" th:value="${board.idx}" />
+					<input type="hidden" name="writer" value="테스터" />
+
 					<div class="input-group margin-bottom-20">
-						<input type="text" name="comment" class="form-control" placeholder="댓글을 입력해 주세요.">
+						<input type="text" name="content" class="form-control" placeholder="댓글을 입력해 주세요.">
 						<div class="input-group-btn">
 							<button type="submit" class="btn waves-effect waves-light"><i class="fa fa-commenting" aria-hidden="true"></i></button>
 						</div>
 						<!-- /.input-group-btn -->
 					</div>
-					<ul class="notice-list" th:if="${not #lists.isEmpty( commentList )}" th:each="row, status : ${commentList}">
-						<li>
-							<span class="name" th:text="${status.count + '.' + row.writer}"></span>
+					<ul class="notice-list" th:if="${not #lists.isEmpty( commentList )}">
+						<li th:each="row, status : ${commentList}">
+							<!--/* <span class="name" th:text="${status.count + '.' + row.writer}"></span> */-->
+							<span class="name" th:text="${row.writer}"></span>
 							<span class="desc" th:text="${row.content}"></span>
 							<span class="time" th:text="${#calendars.format( row.insertTime, 'yyyy-MM-dd HH:mm:ss' )}"></span>
 							<button type="button" class="btn btn-xs btn-circle"><i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -132,6 +136,47 @@
 			}
 			// end of function
 
+			function validationOfForm(obj) {
+				/*[- 서버로 전달할 form 데이터들의 묶음 -]*/
+				var formData = $(obj).serializeArray();
+				/*[- 서버로 전달할 form 데이터들을 오브젝트 형태로 담을 변수 -]*/
+				var params = new Object();
+
+				/*[- form에 있는 데이터 개수만큼 params 변수에 key, value 형태로 저장 -]*/
+				$(formData).each(function(idx, obj) {
+					if ( isEmpty(obj) == false ) {
+						params[obj.name] = obj.value;
+					}
+				});
+
+				$.ajax({
+					url : obj.action,
+					type : "post",
+					headers: {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "post"
+					},
+					dataType : "json",
+					data : JSON.stringify(params),
+					async : false,
+					success : function(response) {
+						if ( response.result === false ) {
+							alert(response.message);
+							return false;
+						}
+
+						printCommentList(params.boardIdx);
+					},
+					error : function(request, status, error) {
+						alert("오류가 발생했습니다. 새로고침 후에 다시 시도해 주세요.");
+					}
+				});
+				// end of ajax
+
+				return false;
+			}
+			// end of function
+
 			function printCommentList(boardIdx) {
 
 				if ( isEmpty(boardIdx) || boardIdx < 1 ) {
@@ -139,18 +184,38 @@
 					return false;
 				}
 
-				var uri = /*[[ @{/replies/} ]]*/;
+				var uri = /*[[ @{/comments/} ]]*/;
 				$.ajax({
 					url : uri + boardIdx,
 					type : "get",
 					headers: {
-						"Content-Type": "application/json",
-						"X-HTTP-Method-Override": "patch"
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "patch"
 					},
 					dataType : "json",
 					async : false,
 					success : function(response) {
-						console.log(response);
+						if ( isEmpty(response.commentList) == false ) {
+							if ( isEmpty(document.getElementsByClassName('notice-list')) ) {
+								location.reload();
+							}
+
+							var commentList = JSON.parse(response.commentList);
+							var html = "";
+
+							$(commentList).each(function(idx, obj) {
+								html += '<ul class="notice-list">';
+									html += '<li>';
+										html += '<span class="name">'+ obj.writer +'</span>';
+										html += '<span class="desc">'+ obj.content +'</span>';
+										html += '<span class="time">'+ obj.insertTime +'</span>';
+										html += '<button type="button" class="btn btn-xs btn-circle"><i class="fa fa-pencil" aria-hidden="true"></i></button>';
+									html += '</li>';
+								html += '</ul>';
+							});
+							$(".notice-list").html(html);
+							document.commentForm.content.value = "";
+						}
 					},
 					error : function(request, status, error) {
 						alert("오류가 발생했습니다. 새로고침 후에 다시 시도해 주세요.");

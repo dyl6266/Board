@@ -1,6 +1,8 @@
 package com.dy.project.comment.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.dy.project.common.Constant.YesNo;
@@ -17,6 +19,8 @@ public class CommentDTO extends CommonDTO {
 	private Integer idx;
 
 	/** 게시글 번호 (FK) */
+	@NotNull(message = "게시글 번호를 입력해 주세요.")
+	@Min(value = 1, message = "게시긃 번호는 1보다 작을 수 없습니다.")
 	private Integer boardIdx;
 
 	/** 내용 */

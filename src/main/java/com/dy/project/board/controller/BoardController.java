@@ -99,7 +99,7 @@ public class BoardController {
 		JsonObject result = new JsonObject();
 		result.addProperty("result", Result.FAIL.getsecondValue());
 
-		if (bindingResult.hasErrors() == true) {
+		if (bindingResult.hasErrors()) {
 			FieldError fieldError = bindingResult.getFieldError();
 			result.addProperty("message", fieldError.getDefaultMessage());
 			return result;
