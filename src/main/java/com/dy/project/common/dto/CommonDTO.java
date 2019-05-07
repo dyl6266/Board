@@ -2,6 +2,9 @@ package com.dy.project.common.dto;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.dy.project.common.Constant.YesNo;
 
 import lombok.Getter;
@@ -15,9 +18,11 @@ public class CommonDTO {
 	private YesNo useYn;
 
 	/** 등록일 */
+	@CreationTimestamp
 	private Date insertTime;
 
 	/** 수정일 */
+	@UpdateTimestamp
 	private Date updateTime;
 
 }

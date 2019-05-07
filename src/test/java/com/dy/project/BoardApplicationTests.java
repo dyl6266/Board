@@ -89,5 +89,17 @@ public class BoardApplicationTests {
 		}
 
 	}
+	
+//	@Test
+//	public void 암호화() throws Exception {
+//		try {
+//			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//			String password = "vpsxkvpsxkvpsxk123!@#!@#";
+//			String encodedPassword = passwordEncoder.encode(password);
+//			System.out.println(encodedPassword);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 }
