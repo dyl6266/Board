@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,9 +65,9 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/board/list.do")
-	public String openBoardList(Model model) {
+	public String openBoardList(@ModelAttribute("params") BoardDTO params, Model model) {
 
-		List<BoardDTO> boardList = boardService.getBoardList();
+		List<BoardDTO> boardList = boardService.getBoardList(params);
 		model.addAttribute("boardList", boardList);
 
 		return "board/list";

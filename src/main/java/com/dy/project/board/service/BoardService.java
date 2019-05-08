@@ -33,8 +33,9 @@ public interface BoardService {
 	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
+	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
 	 * @return 게시글 리스트
 	 */
-	public List<BoardDTO> getBoardList();
+	public List<BoardDTO> getBoardList(BoardDTO params);
 
 }

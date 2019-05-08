@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
 	public boolean deleteBoard(Integer idx) {
 
 		BoardDTO board = boardMapper.selectBoardDetail(idx);
-		if ( board == null || "N".equals(String.valueOf(board.getUseYn())) ) {
+		if (board == null || "N".equals(String.valueOf(board.getUseYn()))) {
 			return false;
 		}
 
@@ -90,16 +90,17 @@ public class BoardServiceImpl implements BoardService {
 	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
+	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
 	 * @return 게시글 리스트
 	 */
 	@Override
-	public List<BoardDTO> getBoardList() {
+	public List<BoardDTO> getBoardList(BoardDTO params) {
 
 		List<BoardDTO> boardList = null;
 
-		int totalCnt = boardMapper.selectTotalCnt();
+		int totalCnt = boardMapper.selectTotalCnt(params);
 		if (totalCnt > 0) {
-			boardList = boardMapper.selectBoardList();
+			boardList = boardMapper.selectBoardList(params);
 		}
 
 		return boardList;

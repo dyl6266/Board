@@ -48,16 +48,18 @@ public interface BoardMapper {
 	/**
 	 * 게시글 전체 개수를 카운팅한다.
 	 * 
+	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
 	 * @return 전체 데이터 수
 	 */
-	public int selectTotalCnt();
+	public int selectTotalCnt(BoardDTO params);
 
 	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
+	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
 	 * @return 게시글 리스트
 	 */
-	public List<BoardDTO> selectBoardList();
+	public List<BoardDTO> selectBoardList(BoardDTO params);
 
 	/**
 	 * 게시글 조회 수를 증가시킨다.

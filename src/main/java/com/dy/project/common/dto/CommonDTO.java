@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.dy.project.common.Constant.YesNo;
+import com.dy.project.common.paging.Criteria;
+import com.dy.project.common.paging.PaginationInfo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +26,8 @@ public class CommonDTO {
 	/** 수정일 */
 	@UpdateTimestamp
 	private Date updateTime;
+
+	/** 페이징 정보 */
+	private PaginationInfo paginationInfo;
 
 }
