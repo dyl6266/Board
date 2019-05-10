@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Mapper 인터페이스와 XML의 쿼리를 매칭하기 위한 네임스페이스 지정 -->
-<mapper namespace="com.dy.project.board.mapper.BoardMapper">
+<mapper namespace="com.dy.project.mapper.BoardMapper">
 
 	<!-- TB_BOARD 테이블 컬럼 리스트 -->
 	<sql id="boardColumns">
@@ -19,7 +19,7 @@
 	</sql>
 
 	<!-- 게시글을 등록한다. -->
-	<insert id="insertBoard" parameterType="com.dy.project.board.dto.BoardDTO">
+	<insert id="insertBoard" parameterType="com.dy.project.domain.BoardDTO">
 		INSERT INTO tb_board (
 			<include refid="boardColumns" />
 		) VALUES (
@@ -37,7 +37,7 @@
 	</insert>
 
 	<!-- 게시글을 조회한다. -->
-	<select id="selectBoardDetail" resultType="com.dy.project.board.dto.BoardDTO">
+	<select id="selectBoardDetail" resultType="com.dy.project.domain.BoardDTO">
 		SELECT
 			<include refid="boardColumns" />
 		FROM
@@ -49,7 +49,7 @@
 	</select>
 
 	<!-- 게시글을 수정한다. -->
-	<update id="updateBoard" parameterType="com.dy.project.board.dto.BoardDTO">
+	<update id="updateBoard" parameterType="com.dy.project.domain.BoardDTO">
 		UPDATE tb_board
 		SET
 			  update_time = NOW()
@@ -72,7 +72,7 @@
 	</update>
 
 	<!-- 게시글 전체 개수를 조회한다. -->
-	<select id="selectTotalCnt" parameterType="hashmap" resultType="int">
+	<select id="selectTotalCnt" parameterType="com.dy.project.domain.BoardDTO" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
@@ -82,7 +82,7 @@
 	</select>
 
 	<!-- 게시글 리스트를 조회한다. -->
-	<select id="selectBoardList" parameterType="hashmap" resultType="com.dy.project.board.dto.BoardDTO">
+	<select id="selectBoardList" parameterType="com.dy.project.domain.BoardDTO" resultType="com.dy.project.domain.BoardDTO">
 		SELECT
 			<include refid="boardColumns" />
 		FROM
@@ -93,9 +93,7 @@
 			notice_yn ASC,
 			idx DESC,
 			insert_time DESC
-		LIMIT
-			#{paginationInfo.firstRecordIndex},
-			#{criteria.recordCountPerPage}
+		<include refid="CommonMapper.paging" />
 	</select>
 
 	<!-- 게시글 조회 수를 증가시킨다. -->

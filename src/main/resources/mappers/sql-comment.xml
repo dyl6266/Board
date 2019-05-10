@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Mapper 인터페이스와 XML의 쿼리를 매칭하기 위한 네임스페이스 지정 -->
-<mapper namespace="com.dy.project.comment.mapper.CommentMapper">
+<mapper namespace="com.dy.project.mapper.CommentMapper">
 
 	<!-- TB_COMMENT 테이블 컬럼 리스트 -->
 	<sql id="commentColumns">
@@ -17,7 +17,7 @@
 	</sql>
 
 	<!-- 댓글을 등록한다. -->
-	<insert id="insertComment" parameterType="com.dy.project.comment.dto.CommentDTO">
+	<insert id="insertComment" parameterType="com.dy.project.domain.CommentDTO">
 		INSERT INTO tb_comment (
 			<include refid="commentColumns" />
 		) VALUES (
@@ -33,7 +33,7 @@
 	</insert>
 
 	<!-- 댓글을 조회한다. -->
-	<select id="selectCommentDetail" parameterType="hashmap" resultType="com.dy.project.comment.dto.CommentDTO">
+	<select id="selectCommentDetail" parameterType="hashmap" resultType="com.dy.project.domain.CommentDTO">
 		SELECT
 			<include refid="commentColumns" />
 		FROM
@@ -47,7 +47,7 @@
 	</select>
 
 	<!-- 댓글을 수정한다. -->
-	<update id="updateComment" parameterType="com.dy.project.comment.dto.CommentDTO">
+	<update id="updateComment" parameterType="com.dy.project.domain.CommentDTO">
 		UPDATE tb_comment
 		SET
 			  update_time = NOW()
@@ -72,7 +72,7 @@
 	</update>
 
 	<!-- 댓글 전체 개수를 카운팅한다. -->
-	<select id="selectTotalCnt" parameterType="com.dy.project.comment.dto.CommentDTO" resultType="int">
+	<select id="selectTotalCnt" parameterType="com.dy.project.domain.CommentDTO" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
@@ -84,7 +84,7 @@
 	</select>
 
 	<!-- 댓글 리스트를 조회한다. -->
-	<select id="selectCommentList" parameterType="com.dy.project.comment.dto.CommentDTO" resultType="com.dy.project.comment.dto.CommentDTO">
+	<select id="selectCommentList" parameterType="com.dy.project.domain.CommentDTO" resultType="com.dy.project.domain.CommentDTO">
 		SELECT
 			<include refid="commentColumns" />
 		FROM

@@ -14,14 +14,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.dy.project.board.dto.BoardDTO;
-import com.dy.project.board.mapper.BoardMapper;
-import com.dy.project.board.service.BoardService;
-import com.dy.project.comment.dto.CommentDTO;
-import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.YesNo;
 import com.dy.project.common.paging.Criteria;
 import com.dy.project.common.paging.PaginationInfo;
+import com.dy.project.domain.BoardDTO;
+import com.dy.project.domain.CommentDTO;
+import com.dy.project.mapper.BoardMapper;
+import com.dy.project.service.BoardService;
+import com.dy.project.service.CommentService;
 import com.google.gson.Gson;
 
 @RunWith(SpringRunner.class)

@@ -1,4 +1,4 @@
-package com.dy.project.board.controller;
+package com.dy.project.controller;
 
 import java.util.List;
 
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dy.project.board.dto.BoardDTO;
-import com.dy.project.board.service.BoardService;
-import com.dy.project.comment.dto.CommentDTO;
-import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.Result;
 import com.dy.project.common.paging.Criteria;
+import com.dy.project.domain.BoardDTO;
+import com.dy.project.domain.CommentDTO;
+import com.dy.project.service.BoardService;
+import com.dy.project.service.CommentService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -69,16 +69,9 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/board/list.do")
-	public String openBoardList(@ModelAttribute("board") BoardDTO board,
-								@ModelAttribute Criteria criteria, BindingResult bindingResult,
-								Model model) {
+	public String openBoardList(@ModelAttribute("params") BoardDTO params, Model model) {
 
-		if (bindingResult.hasErrors()) {
-			FieldError fieldError = bindingResult.getFieldError();
-			System.out.println(fieldError.getDefaultMessage());
-		}
-
-		List<BoardDTO> boardList = boardService.getBoardList(board, criteria);
+		List<BoardDTO> boardList = boardService.getBoardList(params);
 		model.addAttribute("boardList", boardList);
 
 		return "board/list";
@@ -138,28 +131,19 @@ public class BoardController {
 
 	@GetMapping(value = "/boards")
 	@ResponseBody
-	public JsonObject selectBoardList(final BoardDTO board, @Valid final Criteria criteria,
-			BindingResult bindingResult) {
+	public JsonObject selectBoardList(final BoardDTO board) {
 
 		JsonObject jsonObj = new JsonObject();
 
-		if (bindingResult.hasErrors()) {
-			FieldError fieldError = bindingResult.getFieldError();
-			jsonObj.addProperty("result", Result.FAIL.getsecondValue());
-			jsonObj.addProperty("message", fieldError.getDefaultMessage());
-			return jsonObj;
-		}
-
-		List<BoardDTO> boardList = boardService.getBoardList(board, criteria);
-		JsonArray jsonArr = null;
+		List<BoardDTO> boardList = boardService.getBoardList(board);
 		if (CollectionUtils.isEmpty(boardList) == false) {
-			jsonArr = new Gson().toJsonTree(boardList).getAsJsonArray();
+			JsonArray jsonArr = new Gson().toJsonTree(boardList).getAsJsonArray();
+			jsonObj.add("boardList", jsonArr);
 		}
 
-		jsonObj.addProperty("result", Result.OK.getsecondValue());
-		jsonObj.add("boardList", jsonArr);
 		return jsonObj;
 	}
+	// end of method
 
 	@PatchMapping(value = "/boards/{idx}")
 	@ResponseBody

@@ -1,4 +1,4 @@
-package com.dy.project.comment.service;
+package com.dy.project.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dy.project.comment.dto.CommentDTO;
-import com.dy.project.comment.mapper.CommentMapper;
 import com.dy.project.common.Constant.Result;
+import com.dy.project.domain.CommentDTO;
+import com.dy.project.mapper.CommentMapper;
 
 /* 해당 클래스가 비즈니스 로직을 수행하는 서비스 클래스임을 명시 */
 @Service

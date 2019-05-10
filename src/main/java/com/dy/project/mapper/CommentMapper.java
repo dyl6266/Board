@@ -1,11 +1,11 @@
-package com.dy.project.comment.mapper;
+package com.dy.project.mapper;
 
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.dy.project.comment.dto.CommentDTO;
+import com.dy.project.domain.CommentDTO;
 
 /*
  * MyBatis의 Mapper 인터페이스임을 명시

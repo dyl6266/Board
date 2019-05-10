@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper 네임스페이스 지정 -->
+<mapper namespace="CommonMapper">
+
+	<sql id="paging">
+		LIMIT
+			#{paginationInfo.firstRecordIndex} , #{recordCountPerPage}
+	</sql>
+
+</mapper>

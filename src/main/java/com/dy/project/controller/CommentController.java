@@ -1,4 +1,4 @@
-package com.dy.project.board.controller;
+package com.dy.project.controller;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dy.project.comment.dto.CommentDTO;
-import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.Result;
+import com.dy.project.domain.CommentDTO;
+import com.dy.project.service.CommentService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

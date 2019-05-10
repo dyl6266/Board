@@ -35,28 +35,67 @@
 						<td th:text="${#calendars.format(row.insertTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
 						<td th:text="${row.viewCnt}"></td>
 					</tr>
-					<tr th:unless="${not #lists.isEmpty(boardList) == false}">
+					<tr th:unless="${not #lists.isEmpty( boardList )}">
 						<td colspan="5">조회된 결과가 없습니다.</td>
 					</tr>
 				</tbody>
 			</table>
-	
+
 			<div class="btn_wrap text-right">
 				<a th:href="@{/board/write.do}" class="btn btn-primary waves-effect waves-light">Write</a>
 			</div>
-	
-			<nav aria-label="Page navigation" class="text-center">
-				<ul class="pagination">
-					<li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-					</a></li>
-				</ul>
-			</nav>
+
+			<th:block layout:fragment="paging">
+				<nav th:if="${not #lists.isEmpty( boardList ) and params != null}" th:object="${params.paginationInfo}" aria-label="Page navigation" class="text-center">
+					<ul class="pagination">
+						<li th:if="*{previousPage == true}"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+						<!--/* step은 numbers.sequence 메소드의 세 번째 인자에 지정할 수 있음 */-->
+						<!--/* [[ *{makeQueryString(3)} ]] <= 이러한 방법으로 자바의 메소드를 호출할 수 있음 */-->
+						<li th:each="seq : *{#numbers.sequence( firstPage, lastPage )}"><a href="javascript:void(0)" th:text="${seq}" th:onclick="moveThePage([[ ${seq} ]])"></a></li>
+						<li th:if="*{nextPage == true}"><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
+					</ul>
+				</nav>
+			</th:block>
 		</div>
+	</th:block>
+
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function moveThePage(currentPageNo) {
+				$.ajax({
+					url : /*[[ @{/boards} ]]*/,
+					type : "get",
+					headers : {
+						"Content-Type": "application/json",
+						"X-HTTP-Method-Override": "get"
+					},
+					dataType : "json",
+					data : {
+						"currentPageNo" : currentPageNo,
+						"recordCountPerPage" : /*[[ ${params.paginationInfo.criteria.recordCountPerPage} ]]*/,
+						"pageSize" : /*[[ ${params.paginationInfo.criteria.pageSize} ]]*/,
+					},
+					success : function(response) {
+						if ( isEmpty(response.boardList) == false ) {
+							var html = "";
+
+							$(response.boardList).each(function(idx, obj) {
+								console.log(obj.title);
+							});
+						}
+					},
+					error : function(request, status, error) {
+						alert("오류가 발생했습니다. 새로고침 후에 다시 시도해 주세요.");
+					}
+				});
+				// end of ajax
+			}
+			// end of function
+
+
+			/*]]>*/
+		</script>
 	</th:block>
 </html>

@@ -1,4 +1,4 @@
-package com.dy.project.comment.dto;
+package com.dy.project.domain;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.dy.project.common.Constant.YesNo;
-import com.dy.project.common.dto.CommonDTO;
 
 import lombok.Getter;
 import lombok.Setter;

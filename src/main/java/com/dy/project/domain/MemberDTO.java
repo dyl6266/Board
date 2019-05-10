@@ -1,3 +1,4 @@
+package com.dy.project.domain;
 //package com.dy.project.member.dto;
 //
 //import javax.validation.constraints.NotBlank;

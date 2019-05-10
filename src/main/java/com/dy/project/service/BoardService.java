@@ -1,9 +1,8 @@
-package com.dy.project.board.service;
+package com.dy.project.service;
 
 import java.util.List;
 
-import com.dy.project.board.dto.BoardDTO;
-import com.dy.project.common.paging.Criteria;
+import com.dy.project.domain.BoardDTO;
 
 public interface BoardService {
 
@@ -32,12 +31,11 @@ public interface BoardService {
 	public boolean deleteBoard(Integer idx);
 
 	/**
-	 * 게시글 리스트를 조회한다. (페이징)
+	 * 게시글 리스트를 조회한다.
 	 * 
-	 * @param board - 게시글 리스트 조회에 사용할 파라미터들이 담긴 클래스
-	 * @param criteria - 페이징에 사용할 파라미터들이 담긴 클래스
+	 * @param params - 게시글 리스트 조회 & 페이징에 사용할 파라미터들이 담긴 클래스
 	 * @return 게시글 리스트
 	 */
-	public List<BoardDTO> getBoardList(BoardDTO board, Criteria criteria);
+	public List<BoardDTO> getBoardList(BoardDTO params);
 
 }

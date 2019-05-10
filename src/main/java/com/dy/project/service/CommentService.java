@@ -1,8 +1,8 @@
-package com.dy.project.comment.service;
+package com.dy.project.service;
 
 import java.util.List;
 
-import com.dy.project.comment.dto.CommentDTO;
+import com.dy.project.domain.CommentDTO;
 
 public interface CommentService {
 
