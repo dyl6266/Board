@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,9 @@ import com.dy.project.board.service.BoardService;
 import com.dy.project.comment.dto.CommentDTO;
 import com.dy.project.comment.service.CommentService;
 import com.dy.project.common.Constant.Result;
+import com.dy.project.common.paging.Criteria;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /* 해당 클래스가 디스패처(Dispatcher) 역할을 하는 컨트롤러 클래스임을 명시 */
@@ -65,9 +69,16 @@ public class BoardController {
 	}
 
 	@GetMapping(value = "/board/list.do")
-	public String openBoardList(@ModelAttribute("params") BoardDTO params, Model model) {
+	public String openBoardList(@ModelAttribute("board") BoardDTO board,
+								@ModelAttribute Criteria criteria, BindingResult bindingResult,
+								Model model) {
 
-		List<BoardDTO> boardList = boardService.getBoardList(params);
+		if (bindingResult.hasErrors()) {
+			FieldError fieldError = bindingResult.getFieldError();
+			System.out.println(fieldError.getDefaultMessage());
+		}
+
+		List<BoardDTO> boardList = boardService.getBoardList(board, criteria);
 		model.addAttribute("boardList", boardList);
 
 		return "board/list";
@@ -97,62 +108,87 @@ public class BoardController {
 	@ResponseBody
 	public JsonObject registerBoard(@RequestBody @Valid final BoardDTO params, BindingResult bindingResult) {
 
-		JsonObject result = new JsonObject();
-		result.addProperty("result", Result.FAIL.getsecondValue());
+		JsonObject jsonObj = new JsonObject();
+		jsonObj.addProperty("result", Result.FAIL.getsecondValue());
 
 		if (bindingResult.hasErrors()) {
 			FieldError fieldError = bindingResult.getFieldError();
-			result.addProperty("message", fieldError.getDefaultMessage());
-			return result;
+			jsonObj.addProperty("message", fieldError.getDefaultMessage());
+			return jsonObj;
 		}
 
 		try {
 			if (boardService.registerBoard(params) == false) {
-				result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
-				return result;
+				jsonObj.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+				return jsonObj;
 			}
 		} catch (DataAccessException e) {
-			result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
-			return result;
+			jsonObj.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+			return jsonObj;
 		} catch (Exception e) {
-			result.addProperty("message", "알 수 없는 오류가 발생하였습니다. 다시 시도해 주세요.");
-			return result;
+			jsonObj.addProperty("message", "알 수 없는 오류가 발생하였습니다. 다시 시도해 주세요.");
+			return jsonObj;
 		}
 
-		result = new JsonObject();
-		result.addProperty("result", Result.OK.getsecondValue());
-		return result;
+		jsonObj = new JsonObject();
+		jsonObj.addProperty("result", Result.OK.getsecondValue());
+		return jsonObj;
 	}
 	// end of method
+
+	@GetMapping(value = "/boards")
+	@ResponseBody
+	public JsonObject selectBoardList(final BoardDTO board, @Valid final Criteria criteria,
+			BindingResult bindingResult) {
+
+		JsonObject jsonObj = new JsonObject();
+
+		if (bindingResult.hasErrors()) {
+			FieldError fieldError = bindingResult.getFieldError();
+			jsonObj.addProperty("result", Result.FAIL.getsecondValue());
+			jsonObj.addProperty("message", fieldError.getDefaultMessage());
+			return jsonObj;
+		}
+
+		List<BoardDTO> boardList = boardService.getBoardList(board, criteria);
+		JsonArray jsonArr = null;
+		if (CollectionUtils.isEmpty(boardList) == false) {
+			jsonArr = new Gson().toJsonTree(boardList).getAsJsonArray();
+		}
+
+		jsonObj.addProperty("result", Result.OK.getsecondValue());
+		jsonObj.add("boardList", jsonArr);
+		return jsonObj;
+	}
 
 	@PatchMapping(value = "/boards/{idx}")
 	@ResponseBody
 	public JsonObject deleteBoard(@Valid @PathVariable("idx") final Integer idx) {
 
-		JsonObject result = new JsonObject();
-		result.addProperty("result", Result.FAIL.getsecondValue());
+		JsonObject jsonObj = new JsonObject();
+		jsonObj.addProperty("result", Result.FAIL.getsecondValue());
 
 		if (idx == null || idx < 1) {
-			result.addProperty("message", "올바르지 않은 접근입니다.");
-			return result;
+			jsonObj.addProperty("message", "올바르지 않은 접근입니다.");
+			return jsonObj;
 		}
 
 		try {
 			if (boardService.deleteBoard(idx) == false) {
-				result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
-				return result;
+				jsonObj.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+				return jsonObj;
 			}
 		} catch (DataAccessException e) {
-			result.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
-			return result;
+			jsonObj.addProperty("message", "DB 처리 과정에 문제가 발생하였습니다. 다시 시도해 주세요.");
+			return jsonObj;
 		} catch (Exception e) {
-			result.addProperty("message", "알 수 없는 오류가 발생하였습니다. 다시 시도해 주세요.");
-			return result;
+			jsonObj.addProperty("message", "알 수 없는 오류가 발생하였습니다. 다시 시도해 주세요.");
+			return jsonObj;
 		}
 
-		result = new JsonObject();
-		result.addProperty("result", Result.OK.getsecondValue());
-		return result;
+		jsonObj = new JsonObject();
+		jsonObj.addProperty("result", Result.OK.getsecondValue());
+		return jsonObj;
 	}
 
 }

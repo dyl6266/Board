@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.dy.project.common.Constant.YesNo;
-import com.dy.project.common.paging.Criteria;
 import com.dy.project.common.paging.PaginationInfo;
 
 import lombok.Getter;

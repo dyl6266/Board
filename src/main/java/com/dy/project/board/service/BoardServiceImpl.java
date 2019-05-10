@@ -1,5 +1,6 @@
 package com.dy.project.board.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.dy.project.board.dto.BoardDTO;
 import com.dy.project.board.mapper.BoardMapper;
 import com.dy.project.common.Constant.Result;
+import com.dy.project.common.paging.Criteria;
+import com.dy.project.common.paging.PaginationInfo;
 
 /* 해당 클래스가 비즈니스 로직을 수행하는 서비스 클래스임을 명시 */
 @Service
@@ -88,18 +91,27 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	/**
-	 * 게시글 리스트를 조회한다.
+	 * 게시글 리스트를 조회한다. (페이징)
 	 * 
-	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
+	 * @param board    - 게시글 리스트 조회에 사용할 파라미터들이 담긴 클래스
+	 * @param criteria - 페이징에 사용할 파라미터들이 담긴 클래스
 	 * @return 게시글 리스트
 	 */
 	@Override
-	public List<BoardDTO> getBoardList(BoardDTO params) {
+	public List<BoardDTO> getBoardList(BoardDTO board, Criteria criteria) {
 
 		List<BoardDTO> boardList = null;
 
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("board", board);
+		params.put("criteria", criteria);
+
 		int totalCnt = boardMapper.selectTotalCnt(params);
 		if (totalCnt > 0) {
+			criteria.setTotalRecordCount(totalCnt);
+			PaginationInfo paginationInfo = new PaginationInfo(criteria);
+			params.put("paginationInfo", paginationInfo);
+
 			boardList = boardMapper.selectBoardList(params);
 		}
 

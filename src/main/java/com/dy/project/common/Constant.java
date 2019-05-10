@@ -28,7 +28,7 @@ public class Constant {
 	}
 
 	public enum TableName {
-		TB_BOARD("board");
+		TB_BOARD("board"), TB_COMMENT("comment");
 
 		private String tableName;
 

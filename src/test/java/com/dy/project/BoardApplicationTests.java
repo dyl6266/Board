@@ -100,20 +100,20 @@ public class BoardApplicationTests {
 
 	}
 
-	@Test
-	public void 페이징() throws Exception {
-		
-		int totalCount = boardMapper.selectTotalCnt(new BoardDTO());
-		BoardDTO params = new BoardDTO();
-		
-		Criteria criteria = new Criteria(3, 15, 10, totalCount);
-		
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCriteria(criteria);
-
-		params.setPaginationInfo(paginationInfo);
-		List<BoardDTO> boardList = boardMapper.selectBoardList(params);
-	}
+//	@Test
+//	public void 페이징() throws Exception {
+//		
+//		int totalCount = boardMapper.selectTotalCnt(new BoardDTO());
+//		BoardDTO params = new BoardDTO();
+//		
+//		Criteria criteria = new Criteria(3, 15, 10, totalCount);
+//		
+//		PaginationInfo paginationInfo = new PaginationInfo();
+//		paginationInfo.setCriteria(criteria);
+//
+//		params.setPaginationInfo(paginationInfo);
+//		List<BoardDTO> boardList = boardMapper.selectBoardList(params);
+//	}
 
 //	@Test
 //	public void 암호화() throws Exception {

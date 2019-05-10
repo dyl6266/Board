@@ -72,7 +72,7 @@
 	</update>
 
 	<!-- 게시글 전체 개수를 조회한다. -->
-	<select id="selectTotalCnt" parameterType="com.dy.project.board.dto.BoardDTO" resultType="int">
+	<select id="selectTotalCnt" parameterType="hashmap" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
@@ -82,7 +82,7 @@
 	</select>
 
 	<!-- 게시글 리스트를 조회한다. -->
-	<select id="selectBoardList" parameterType="com.dy.project.board.dto.BoardDTO" resultType="com.dy.project.board.dto.BoardDTO">
+	<select id="selectBoardList" parameterType="hashmap" resultType="com.dy.project.board.dto.BoardDTO">
 		SELECT
 			<include refid="boardColumns" />
 		FROM
@@ -95,7 +95,7 @@
 			insert_time DESC
 		LIMIT
 			#{paginationInfo.firstRecordIndex},
-			#{paginationInfo.criteria.recordCountPerPage}
+			#{criteria.recordCountPerPage}
 	</select>
 
 	<!-- 게시글 조회 수를 증가시킨다. -->

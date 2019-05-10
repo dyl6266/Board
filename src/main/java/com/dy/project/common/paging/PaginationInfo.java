@@ -7,6 +7,13 @@ import lombok.Setter;
 @Setter
 public class PaginationInfo {
 
+	public PaginationInfo(Criteria criteria) {
+		this.criteria = criteria;
+
+		calculation();
+	}
+
+	/** 페이징 계산에 필요한 파라미터들이 담긴 클래스 */
 	private Criteria criteria;
 
 	/** 전체 페이지 개수 */
@@ -23,12 +30,6 @@ public class PaginationInfo {
 
 	/** SQL의 조건절에 사용되는 마지막 RNUM */
 	private int lastRecordIndex;
-
-	public void setCriteria(Criteria criteria) {
-		this.criteria = criteria;
-
-		calculation();
-	}
 
 	/**
 	 * 페이징 정보를 계산한다.

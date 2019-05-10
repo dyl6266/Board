@@ -1,5 +1,6 @@
 package com.dy.project.board.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -48,18 +49,18 @@ public interface BoardMapper {
 	/**
 	 * 게시글 전체 개수를 카운팅한다.
 	 * 
-	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
+	 * @param params - 페이징에 사용할 파라미터들이 담긴 HashMap
 	 * @return 전체 데이터 수
 	 */
-	public int selectTotalCnt(BoardDTO params);
+	public int selectTotalCnt(HashMap<String, Object> params);
 
 	/**
 	 * 게시글 리스트를 조회한다.
 	 * 
-	 * @param params - 페이징에 사용할 파라미터들이 담긴 클래스
+	 * @param params - 페이징에 사용할 파라미터들이 담긴 HashMap
 	 * @return 게시글 리스트
 	 */
-	public List<BoardDTO> selectBoardList(BoardDTO params);
+	public List<BoardDTO> selectBoardList(HashMap<String, Object> params);
 
 	/**
 	 * 게시글 조회 수를 증가시킨다.
